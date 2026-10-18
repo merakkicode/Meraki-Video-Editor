@@ -1,0 +1,19 @@
+[package]
+name = "meraki-render"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+[dependencies]
+meraki-compositor.workspace = true
+meraki-audio.workspace = true
+meraki-core.workspace = true
+meraki-media.workspace = true
+meraki-timeline.workspace = true
+meraki-project.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tempfile = "3"
+[dev-dependencies]
+meraki-graph.workspace = true

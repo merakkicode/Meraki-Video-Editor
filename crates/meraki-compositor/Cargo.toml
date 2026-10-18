@@ -1,0 +1,17 @@
+[package]
+name = "meraki-compositor"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+[dependencies]
+meraki-core.workspace = true
+meraki-graph.workspace = true
+meraki-timeline.workspace = true
+meraki-media.workspace = true
+rayon = "1.12"
+
+wgpu = "26.0.1"
+pollster = "0.4"
+fontdue = "0.9"

@@ -1,0 +1,38 @@
+[package]
+name = "meraki-desktop"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Meraki desktop shell"
+
+[lib]
+name = "meraki_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[features]
+default = []
+custom-protocol = ["tauri/custom-protocol"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+meraki-compositor.workspace = true
+meraki-audio.workspace = true
+meraki-render.workspace = true
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["sync", "rt", "macros"] }
+meraki-core.workspace = true
+meraki-graph.workspace = true
+meraki-timeline.workspace = true
+meraki-engine = { path = "../../../crates/meraki-engine" }
+meraki-media.workspace = true
+meraki-project.workspace = true
+tauri-plugin-dialog = "2"
+
+[dev-dependencies]
+tempfile = "3"

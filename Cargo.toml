@@ -1,0 +1,29 @@
+[workspace]
+members = ["crates/meraki-compositor", "crates/meraki-audio", "crates/meraki-core", "crates/meraki-graph", "crates/meraki-timeline", "crates/meraki-engine", "crates/meraki-media", "crates/meraki-project", "crates/meraki-render", "apps/desktop/src-tauri"]
+resolver = "2"
+
+[workspace.package]
+version = "1.0.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+authors = ["Meraki Core Team", "Meraki Contributors"]
+repository = "https://github.com/merakkicode/meraki"
+
+[workspace.dependencies]
+meraki-compositor = { path = "crates/meraki-compositor" }
+meraki-audio = { path = "crates/meraki-audio" }
+meraki-render = { path = "crates/meraki-render" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+meraki-media = { path = "crates/meraki-media" }
+meraki-project = { path = "crates/meraki-project" }
+meraki-core = { path = "crates/meraki-core" }
+meraki-graph = { path = "crates/meraki-graph" }
+meraki-timeline = { path = "crates/meraki-timeline" }
+
+[profile.dev.package.meraki-compositor]
+opt-level = 3
+[profile.dev.package.rayon]
+opt-level = 3
+[profile.dev.package.rayon-core]
+opt-level = 3

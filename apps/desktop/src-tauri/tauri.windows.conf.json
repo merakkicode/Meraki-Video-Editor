@@ -1,0 +1,33 @@
+{
+  "bundle": {
+    "targets": [
+      "nsis",
+      "msi"
+    ],
+    "resources": {
+      "../../../tools/ffmpeg/bin/ffmpeg.exe": "tools/ffmpeg/bin/ffmpeg.exe",
+      "../../../tools/ffmpeg/bin/ffprobe.exe": "tools/ffmpeg/bin/ffprobe.exe",
+      "../../../tools/ffmpeg/ffmpeg-9.0.2-essentials_build/LICENSE": "tools/ffmpeg/LICENSE",
+      "../../../tools/ffmpeg/ffmpeg-9.0.2-essentials_build/README.txt": "tools/ffmpeg/README.txt"
+    },
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": [
+          "PortugueseBR",
+          "English"
+        ],
+        "displayLanguageSelector": true
+      },
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper",
+        "silent": true
+      },
+      "wix": {
+        "language": "en-US",
+        "version": "1.0.0",
+        "upgradeCode": "f9a0eb99-8ac2-4c53-99cb-8ee40e88e2ab"
+      }
+    }
+  }
+}

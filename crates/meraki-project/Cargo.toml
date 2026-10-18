@@ -1,0 +1,15 @@
+[package]
+name = "meraki-project"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+[dependencies]
+meraki-core.workspace = true
+meraki-graph.workspace = true
+meraki-timeline.workspace = true
+meraki-media.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tempfile = "3"

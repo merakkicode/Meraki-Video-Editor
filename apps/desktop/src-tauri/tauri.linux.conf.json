@@ -1,0 +1,33 @@
+{
+  "bundle": {
+    "targets": [
+      "appimage",
+      "deb"
+    ],
+    "linux": {
+      "deb": {
+        "depends": [
+          "libwebkit2gtk-4.1-0",
+          "libgtk-3-0",
+          "libasound2",
+          "libasound2-plugins",
+          "libssl3",
+          "libvulkan1",
+          "fonts-dejavu-core"
+        ],
+        "section": "video",
+        "files": {
+          "/usr/lib/meraki/tools/ffmpeg": "../../../tools/linux/ffmpeg",
+          "/usr/share/metainfo/org.merakkicode.Meraki.metainfo.xml": "../../../packaging/flatpak/org.merakkicode.Meraki.metainfo.xml"
+        }
+      },
+      "appimage": {
+        "files": {
+          "usr/lib/meraki/tools/ffmpeg": "../../../tools/linux/ffmpeg",
+          "usr/share/fonts/truetype/dejavu": "/usr/share/fonts/truetype/dejavu",
+          "usr/share/doc/fonts-dejavu-core/copyright": "/usr/share/doc/fonts-dejavu-core/copyright"
+        }
+      }
+    }
+  }
+}

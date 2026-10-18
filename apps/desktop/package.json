@@ -1,0 +1,33 @@
+{
+  "name": "meraki-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tauri dev",
+    "dev:web": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "build:desktop": "tauri build",
+    "test": "vitest run",
+    "tauri": "tauri",
+    "bundle:windows": "tauri build --bundles nsis,msi",
+    "bundle:linux": "tauri build --bundles appimage,deb"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.10.0",
+    "lucide-solid": "^0.468.0",
+    "solid-js": "^1.9.9"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.10.0",
+    "@types/node": "^24.0.0",
+    "prettier": "^3.6.2",
+    "typescript": "~5.9.3",
+    "vite": "^7.1.0",
+    "vite-plugin-solid": "^2.11.0",
+    "vitest": "^5.0.4"
+  },
+  "author": "Meraki Core Team",
+  "license": "MIT OR Apache-2.0",
+  "repository": "https://github.com/merakkicode/meraki"
+}

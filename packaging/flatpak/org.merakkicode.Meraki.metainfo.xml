@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.merakkicode.Meraki</id>
+  <name>Meraki Video Editor</name>
+  <summary>Edit, compose, mix and deliver video</summary>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT OR Apache-2.0</project_license>
+  <developer id="org.merakkicode"><name>Meraki Core Team</name></developer>
+  <description><p>Meraki is a desktop video editor with rational timeline editing, GPU composition, real-time audio and deterministic export.</p><p>Four workspaces bring editing, node effects, mixing and delivery into one interface.</p></description>
+  <launchable type="desktop-id">org.merakkicode.Meraki.desktop</launchable>
+  <url type="homepage">https://github.com/merakkicode/meraki</url>
+  <url type="bugtracker">https://github.com/merakkicode/meraki/issues</url>
+  <content_rating type="oars-1.1"/>
+  <requires><display_length compare="ge">1100</display_length></requires>
+  <supports><control>keyboard</control><control>pointing</control></supports>
+  <releases><release version="1.0.0-rc1" date="2026-10-17"/></releases>
+</component>

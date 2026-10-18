@@ -1,0 +1,17 @@
+:root {
+  --meraki-bg: #10131d;
+  --meraki-panel: #1c2230;
+  --meraki-raised: #2a3242;
+  --meraki-border: #394358;
+  --meraki-text: #eef2f7;
+  --meraki-muted: #a6afc0;
+  --meraki-cyan: #00d2ff;
+  --meraki-violet: #9d4edd;
+  --meraki-accent: linear-gradient(110deg, #00d2ff, #9d4edd);
+  --meraki-radius-panel: 10px;
+  --meraki-radius-control: 6px;
+  --meraki-font-ui: "Inter", "Segoe UI", sans-serif;
+  --meraki-font-display: "Manrope", "Inter", sans-serif;
+  --meraki-font-time: "JetBrains Mono", "Consolas", monospace;
+}
+/* Font files are not bundled. Verify contrast on final states; color is not the only status cue. */

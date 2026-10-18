@@ -1,0 +1,21 @@
+id: org.merakkicode.Meraki
+runtime: org.gnome.Platform
+runtime-version: '49'
+sdk: org.gnome.Sdk
+command: meraki-desktop
+finish-args:
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --share=ipc
+  - --device=dri
+  - --socket=pulseaudio
+  - --filesystem=host
+modules:
+  - name: meraki
+    buildsystem: simple
+    build-commands:
+      - cp -a payload/. /app/
+    sources:
+      - type: archive
+        path: ../../release-assets/meraki-linux-payload.tar.gz
+        strip-components: 0

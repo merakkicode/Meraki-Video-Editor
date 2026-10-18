@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Meraki Video Editor
+Comment=Edit, compose, mix and deliver video
+Exec=meraki-desktop %F
+Icon=org.merakkicode.Meraki
+Terminal=false
+Categories=AudioVideo;Video;AudioVideoEditing;
+StartupNotify=true
