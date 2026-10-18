@@ -1,8 +1,7 @@
 {
   "bundle": {
     "targets": [
-      "appimage",
-      "deb"
+      "appimage"
     ],
     "linux": {
       "deb": {

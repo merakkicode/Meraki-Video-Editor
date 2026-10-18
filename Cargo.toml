@@ -7,7 +7,7 @@ version = "1.0.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 authors = ["Meraki Core Team", "Meraki Contributors"]
-repository = "https://github.com/merakkicode/meraki"
+repository = "https://github.com/merakkicode/Meraki-Video-Editor"
 
 [workspace.dependencies]
 meraki-compositor = { path = "crates/meraki-compositor" }

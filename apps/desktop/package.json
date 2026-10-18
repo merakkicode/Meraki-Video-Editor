@@ -10,8 +10,8 @@
     "build:desktop": "tauri build",
     "test": "vitest run",
     "tauri": "tauri",
-    "bundle:windows": "tauri build --bundles nsis,msi",
-    "bundle:linux": "tauri build --bundles appimage,deb"
+    "bundle:windows": "tauri build --bundles nsis",
+    "bundle:linux": "tauri build --bundles appimage"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.10.0",
@@ -29,5 +29,5 @@
   },
   "author": "Meraki Core Team",
   "license": "MIT OR Apache-2.0",
-  "repository": "https://github.com/merakkicode/meraki"
+  "repository": "https://github.com/merakkicode/Meraki-Video-Editor"
 }

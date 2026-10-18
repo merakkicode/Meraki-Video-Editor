@@ -8,13 +8,40 @@ on:
 permissions:
   contents: read
 jobs:
-  desktop:
+  media:
+    name: Media runtime (${{ matrix.target }})
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-22.04]
+        target: [linux, windows]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake nasm pkg-config gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64
+      - name: Build media runtime with corresponding sources
+        run: bash scripts/build-media-runtime.sh '${{ matrix.target }}'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: media-${{ matrix.target }}
+          path: release-assets/media-*.tar.gz
+          if-no-files-found: error
+          retention-days: 14
+  desktop:
+    needs: media
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: windows
+          - os: ubuntu-22.04
+            target: linux
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 90
+    timeout-minutes: 60
     env:
       CARGO_INCREMENTAL: '0'
       CARGO_TERM_COLOR: always
@@ -34,17 +61,31 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential pkg-config curl file libwebkit2gtk-4.1-dev libgtk-3-dev libasound2-dev libasound2-plugins libssl-dev librsvg2-dev patchelf libvulkan-dev fonts-dejavu-core nasm yasm libx264-dev libx265-dev libfreetype6-dev libharfbuzz-dev libfontconfig1-dev zlib1g-dev
+          sudo apt-get install -y build-essential pkg-config curl file libwebkit2gtk-4.1-dev libgtk-3-dev libasound2-dev libasound2-plugins libssl-dev librsvg2-dev patchelf libvulkan-dev fonts-dejavu-core xvfb
       - name: Frontend dependencies
         working-directory: apps/desktop
         run: npm ci
-      - name: Windows media runtime
+      - uses: actions/download-artifact@v4
+        with:
+          name: media-${{ matrix.target }}
+          path: media-download
+      - name: Install Windows media runtime
         if: runner.os == 'Windows'
         shell: pwsh
-        run: ./scripts/setup-media.ps1
-      - name: Linux media runtime
+        run: |
+          New-Item -ItemType Directory -Force tools/ffmpeg | Out-Null
+          tar -xzf media-download/media-runtime-windows.tar.gz -C tools/ffmpeg
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          tools/ffmpeg/bin/ffmpeg.exe -version
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Install Linux media runtime
         if: runner.os == 'Linux'
-        run: bash scripts/setup-media.sh
+        run: |
+          mkdir -p tools/linux/ffmpeg
+          tar -xzf media-download/media-runtime-linux.tar.gz -C tools/linux/ffmpeg
+          tools/linux/ffmpeg/bin/ffmpeg -version
+      - name: Check release metadata
+        run: node scripts/check-release.mjs
       - run: cargo fmt --all -- --check
       - run: cargo test --workspace --locked
       - run: cargo clippy --workspace --all-targets --locked -- -D warnings
@@ -53,49 +94,33 @@ jobs:
         run: |
           npm test
           npm run build
-      - name: Windows packages
+      - name: Windows installer
         if: runner.os == 'Windows'
         working-directory: apps/desktop
         run: npm run bundle:windows
-      - name: Linux packages
+      - name: Linux AppImage
         if: runner.os == 'Linux'
         working-directory: apps/desktop
         run: npm run bundle:linux
-      - name: Flatpak payload
-        if: runner.os == 'Linux'
-        run: bash scripts/flatpak-payload.sh
       - run: node scripts/collect-release.mjs
+      - name: Media encode/decode smoke test
+        shell: bash
+        run: bash scripts/check-media-runtime.sh '${{ matrix.target }}'
+      - name: AppImage startup smoke test
+        if: runner.os == 'Linux'
+        run: |
+          chmod +x release-assets/Meraki.AppImage
+          set +e
+          timeout 15s xvfb-run -a release-assets/Meraki.AppImage > appimage-startup.log 2>&1
+          result=$?
+          set -e
+          cat appimage-startup.log
+          test "$result" = 124
       - uses: actions/upload-artifact@v4
         with:
           name: meraki-${{ runner.os }}-x64
-          path: release-assets/*
+          path: |
+            release-assets/Meraki-Setup.exe
+            release-assets/Meraki.AppImage
           if-no-files-found: error
           retention-days: 14
-  flatpak:
-    needs: desktop
-    runs-on: ubuntu-22.04
-    timeout-minutes: 45
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: meraki-Linux-x64
-          path: release-assets
-      - name: Install Flatpak SDK
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y flatpak flatpak-builder
-          flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-          flatpak install --user --noninteractive flathub org.gnome.Platform//49 org.gnome.Sdk//49
-      - name: Build and check runtime linkage
-        run: |
-          flatpak-builder --user --force-clean --repo=packaging/flatpak/repo packaging/flatpak/build packaging/flatpak/org.merakkicode.Meraki.yml
-          flatpak build packaging/flatpak/build sh -c 'ldd /app/bin/meraki-desktop.real' > linkage.txt
-          cat linkage.txt
-          if grep -q 'not found' linkage.txt; then exit 1; fi
-          flatpak build-bundle packaging/flatpak/repo release-assets/Meraki.flatpak org.merakkicode.Meraki
-      - uses: actions/upload-artifact@v4
-        with:
-          name: meraki-Flatpak-x64
-          path: release-assets/Meraki.flatpak
-          if-no-files-found: error

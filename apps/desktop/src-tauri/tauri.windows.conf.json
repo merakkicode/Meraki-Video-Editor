@@ -1,14 +1,12 @@
 {
   "bundle": {
     "targets": [
-      "nsis",
-      "msi"
+      "nsis"
     ],
     "resources": {
       "../../../tools/ffmpeg/bin/ffmpeg.exe": "tools/ffmpeg/bin/ffmpeg.exe",
       "../../../tools/ffmpeg/bin/ffprobe.exe": "tools/ffmpeg/bin/ffprobe.exe",
-      "../../../tools/ffmpeg/ffmpeg-9.0.2-essentials_build/LICENSE": "tools/ffmpeg/LICENSE",
-      "../../../tools/ffmpeg/ffmpeg-9.0.2-essentials_build/README.txt": "tools/ffmpeg/README.txt"
+      "../../../tools/ffmpeg/licenses/": "tools/ffmpeg/licenses/"
     },
     "windows": {
       "nsis": {

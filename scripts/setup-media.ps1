@@ -16,5 +16,8 @@ if (!$package) { throw 'Estrutura do pacote FFmpeg inesperada.' }
 $bin = Join-Path $runtime 'bin'
 New-Item -ItemType Directory -Force -Path $bin | Out-Null
 Copy-Item -LiteralPath (Join-Path $package.FullName 'bin/ffmpeg.exe'), (Join-Path $package.FullName 'bin/ffprobe.exe') -Destination $bin
+$licenses = Join-Path $runtime 'licenses'
+New-Item -ItemType Directory -Force -Path $licenses | Out-Null
+Copy-Item -LiteralPath (Join-Path $package.FullName 'LICENSE'), (Join-Path $package.FullName 'README.txt') -Destination $licenses
 & (Join-Path $bin 'ffmpeg.exe') -version | Select-Object -First 1
 Write-Output "Runtime portátil pronto em $bin"

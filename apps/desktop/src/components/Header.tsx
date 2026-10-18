@@ -125,7 +125,7 @@ export default function Header() {
           <span class="status-dot" />
           {editor.snapshot.timeline.name}
           <ChevronDown size={13} />
-          <span class="project-tag">v1.0.0-rc1</span>
+          <span class="project-tag">v1.0.0</span>
           <small title={workflow.autosave}>{workflow.autosave}</small>
         </div>
         <span>
