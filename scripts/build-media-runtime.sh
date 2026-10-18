@@ -48,6 +48,7 @@ export PKG_CONFIG_LIBDIR="$prefix/lib/pkgconfig"
   --enable-static --disable-shared --pkg-config=pkg-config --pkg-config-flags=--static \
   --extra-cflags="-I$prefix/include" --extra-ldflags="-L$prefix/lib $link_flags" \
   --extra-libs='-lstdc++ -lm' "${ff_cross[@]}"
+trap - ERR
 make -j"$(nproc)"
 make install
 runtime="$work/runtime"
@@ -66,7 +67,7 @@ cp "$work/x265_3.6/COPYING" "$runtime/licenses/x265-COPYING"
 cp ffbuild/config.log "$sources/ffmpeg-config.log"
 cp "$work/x265-build/CMakeCache.txt" "$sources/x265-CMakeCache.txt"
 cp "$work/x264-snapshot-20191217-2245-stable/config.mak" "$sources/x264-config.mak"
-cp "$0" "$sources/build-media-runtime.sh"
+cp "$root/scripts/build-media-runtime.sh" "$sources/build-media-runtime.sh"
 cp -r "$runtime/licenses" "$sources/"
 dpkg-query -W gcc g++ gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 cmake nasm pkg-config > "$sources/toolchain.txt"
 tar -czf "$root/release-assets/media-runtime-$target.tar.gz" -C "$runtime" .
