@@ -20,11 +20,13 @@ cross=()
 cmake_cross=()
 ff_cross=()
 exe=''
+link_flags='-static-libgcc -static-libstdc++'
 if [[ "$target" == windows ]]; then
   cross=(--host=x86_64-w64-mingw32 --cross-prefix=x86_64-w64-mingw32-)
   cmake_cross=(-DCMAKE_SYSTEM_NAME=Windows -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++)
   ff_cross=(--target-os=mingw32 --arch=x86_64 --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile)
   exe='.exe'
+  link_flags='-static'
 fi
 cd "$work/x264-snapshot-20191217-2245-stable"
 ./configure --prefix="$prefix" --enable-static --disable-cli --enable-pic "${cross[@]}"
@@ -36,11 +38,12 @@ cmake -S "$work/x265_3.6/source" -B "$work/x265-build" "${cmake_cross[@]}" \
 cmake --build "$work/x265-build" -j"$(nproc)"
 cmake --install "$work/x265-build"
 cd "$work/ffmpeg-7.1.1"
+trap 'test ! -f ffbuild/config.log || tail -n 100 ffbuild/config.log' ERR
 export PKG_CONFIG_LIBDIR="$prefix/lib/pkgconfig"
 ./configure --prefix="$prefix" --disable-doc --disable-debug --disable-autodetect \
   --disable-ffplay --disable-network --enable-gpl --enable-libx264 --enable-libx265 \
-  --enable-static --disable-shared --pkg-config-flags=--static \
-  --extra-cflags="-I$prefix/include" --extra-ldflags="-L$prefix/lib -static-libgcc -static-libstdc++" \
+  --enable-static --disable-shared --pkg-config=pkg-config --pkg-config-flags=--static \
+  --extra-cflags="-I$prefix/include" --extra-ldflags="-L$prefix/lib $link_flags" \
   --extra-libs='-lstdc++ -lm' "${ff_cross[@]}"
 make -j"$(nproc)"
 make install
