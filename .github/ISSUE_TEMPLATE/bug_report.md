@@ -1,17 +1,19 @@
 ---
-name: Bug report
-about: Report a reproducible problem
+name: Relatar problema / Bug report
+about: Informe um defeito reproduzível / Report a reproducible problem
 title: "[Bug] "
 labels: bug
 ---
 
-## What happened?
+Você pode escrever em português ou inglês. You may write in Portuguese or English.
 
-## Expected behavior
+## O que aconteceu? / What happened?
 
-## Reproduction steps
+## Resultado esperado / Expected behavior
 
-## Environment
+## Como reproduzir / Reproduction steps
+
+## Ambiente / Environment
 - Meraki version:
 - OS and version:
 - GPU / driver:

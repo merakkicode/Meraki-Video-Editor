@@ -8,6 +8,6 @@ try {
     npm ci
     if ($LASTEXITCODE -ne 0) { throw 'npm ci falhou' }
     npm run bundle:windows
-    if ($LASTEXITCODE -ne 0) { throw 'NSIS/MSI build failed' }
+    if ($LASTEXITCODE -ne 0) { throw 'NSIS build failed' }
 } finally { Pop-Location }
-Write-Output "Installers: $projectRoot/target/release/bundle/nsis/ and msi/"
+Write-Output "Installer: $projectRoot/target/release/bundle/nsis/"

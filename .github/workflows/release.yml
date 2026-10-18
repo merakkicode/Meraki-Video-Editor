@@ -17,32 +17,35 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
       - uses: actions/download-artifact@v4
         with:
-          pattern: meraki-*-x64
-          path: release-assets
-          merge-multiple: true
-      - name: Validate release version
+          path: artifacts
+      - name: Validate stable version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: node scripts/check-release.mjs
+      - name: Assemble release
         env:
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          node -e 'const c=require("./apps/desktop/src-tauri/tauri.conf.json"); if(process.env.RELEASE_TAG.replace(/^v/,"").split("-")[0]!==c.version)process.exit(1)'
-      - name: Include corresponding runtime sources
-        env:
-          SOURCE_URL: ${{ vars.THIRD_PARTY_SOURCE_URL }}
-          SOURCE_SHA256: ${{ vars.THIRD_PARTY_SOURCE_SHA256 }}
-        run: |
-          test -n "$SOURCE_URL" && test -n "$SOURCE_SHA256"
-          curl --fail --location --proto '=https' --proto-redir '=https' "$SOURCE_URL" -o release-assets/third-party-sources.tar.gz
-          printf '%s  %s\n' "$SOURCE_SHA256" release-assets/third-party-sources.tar.gz | sha256sum --check -
-      - name: Publish release assets
+          mkdir -p publish sources/media sources/linux
+          cp artifacts/meraki-Windows-x64/Meraki-Setup.exe publish/
+          cp artifacts/meraki-Linux-x64/Meraki.AppImage publish/
+          git archive --format=tar.gz --prefix=meraki/ -o sources/meraki-source.tar.gz HEAD
+          cp artifacts/media-windows/media-sources-windows.tar.gz sources/media/
+          cp artifacts/media-linux/media-sources-linux.tar.gz sources/media/
+          cp artifacts/linux-library-sources/linux-library-sources.tar.gz sources/linux/
+          cp THIRD_PARTY_NOTICES.md sources/
+          printf 'Meraki source revision: %s\nBuild: %s/actions/runs/%s\n' "$GITHUB_SHA" "https://github.com/$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > sources/BUILD.txt
+          tar -czf "publish/Meraki-$RELEASE_TAG-sources.tar.gz" -C sources .
+          (cd publish && sha256sum -- * > ../SHA256SUMS)
+          mv SHA256SUMS publish/
+      - name: Publish stable release
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          git archive --format=tar.gz --prefix=meraki/ -o release-assets/meraki-source.tar.gz HEAD
-          (cd release-assets && sha256sum -- * > ../SHA256SUMS)
-          mv SHA256SUMS release-assets/
-          flags=()
-          if [[ "$RELEASE_TAG" == *-* ]]; then flags+=(--prerelease); fi
-          gh release create "$RELEASE_TAG" release-assets/* --verify-tag --title "Meraki Video Editor $RELEASE_TAG" --notes-file docs/release-notes.md "${flags[@]}"
+          gh release create "$RELEASE_TAG" publish/* --verify-tag --latest --title "Meraki Video Editor $RELEASE_TAG" --notes-file docs/release-notes.md

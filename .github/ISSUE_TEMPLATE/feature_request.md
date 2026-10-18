@@ -1,11 +1,13 @@
 ---
-name: Feature request
-about: Propose an improvement to the editing workflow
+name: Sugerir melhoria / Feature request
+about: Proponha uma melhoria no editor / Propose an editing improvement
 title: "[Feature] "
 labels: enhancement
 ---
 
-## Workflow and problem
+Você pode escrever em português ou inglês. You may write in Portuguese or English.
+
+## Fluxo de trabalho e problema / Workflow and problem
 
 ## Proposed behavior
 

@@ -1,18 +1,14 @@
-param([Parameter(Mandatory=$true)][string]$Email, [switch]$Push)
+param([Parameter(Mandatory=$true)][string]$Email)
 $ErrorActionPreference = 'Stop'
-$projectRoot = Split-Path $PSScriptRoot -Parent
-Set-Location -LiteralPath $projectRoot
+Set-Location -LiteralPath (Split-Path $PSScriptRoot -Parent)
 function Git-Checked { & git @args; if ($LASTEXITCODE -ne 0) { throw "Git failed: $args" } }
-if (-not (Test-Path -LiteralPath '.git')) {
-    Git-Checked init
-    Git-Checked branch -M main
-    Git-Checked remote add origin https://github.com/merakkicode/Meraki-Video-Editor.git
-}
+git rev-parse --git-dir 2>$null | Out-Null
+if ($LASTEXITCODE -eq 0) { throw 'Repository already exists. See docs/releasing.md for normal releases.' }
+Git-Checked init -b main
 Git-Checked config user.name 'Meraki Core Team'
 Git-Checked config user.email $Email
+Git-Checked remote add origin https://github.com/merakkicode/Meraki-Video-Editor.git
 Git-Checked add .
 Git-Checked diff --cached --check
 Git-Checked commit -m 'feat(core): initial release of Meraki Video Editor v1.0.0 (Windows & Linux)'
-Git-Checked tag -a v1.0.0-rc1 -m 'Meraki Video Editor 1.0.0 Release Candidate'
-if ($Push) { Git-Checked push -u origin main --tags }
-else { Write-Output 'Local repository ready. Review git show --stat and run: git push -u origin main --tags' }
+Write-Output 'Review the commit, then push main. Tag only after platform validation; see docs/releasing.md.'

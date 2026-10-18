@@ -6,6 +6,7 @@ apps/desktop/src-tauri/gen/
 /tools/
 /fixtures/
 /release-assets/
+/media-download/
 /packaging/flatpak/build/
 /packaging/flatpak/repo/
 /.flatpak-builder/

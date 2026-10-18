@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Instalação e primeiros passos
+    url: https://github.com/merakkicode/Meraki-Video-Editor/blob/main/docs/getting-started.md
+    about: Aprenda a importar, editar, salvar e exportar seu primeiro vídeo.
+  - name: Installation guide (English overview)
+    url: https://github.com/merakkicode/Meraki-Video-Editor/blob/main/docs/README.en.md
+    about: Downloads, installation and an overview of the editor in English.

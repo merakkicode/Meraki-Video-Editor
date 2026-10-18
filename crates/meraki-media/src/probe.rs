@@ -21,12 +21,14 @@ impl Tools {
         if let Ok(exe) = std::env::current_exe() {
             for ancestor in exe.ancestors().skip(1) {
                 directories.push(ancestor.join("tools/ffmpeg/bin"));
+                directories.push(ancestor.join("tools/linux/ffmpeg/bin"));
                 directories.push(ancestor.join("lib/meraki/tools/ffmpeg/bin"));
             }
         }
         if let Ok(cwd) = std::env::current_dir() {
             for ancestor in cwd.ancestors() {
                 directories.push(ancestor.join("tools/ffmpeg/bin"));
+                directories.push(ancestor.join("tools/linux/ffmpeg/bin"));
             }
         }
         let base = directories
@@ -60,7 +62,7 @@ pub fn probe(tools: &Tools, path: &Path, id: AssetId) -> MediaResult<Asset> {
     if !path.is_file() {
         return Err("Selecione um arquivo local de vídeo.".into());
     }
-    let output=command(&tools.ffprobe).args(["-v","error","-protocol_whitelist","file,pipe","-show_entries","stream=codec_type,index,width,height,time_base,start_pts,start_time,duration_ts,duration,avg_frame_rate,r_frame_rate,codec_name,sample_aspect_ratio:stream_side_data=rotation:format=duration","-of","json"]).arg(&path).output().map_err(|e|format!("FFprobe não disponível. Execute scripts/setup-media.ps1 ou configure MERAKI_FFMPEG_DIR. {e}"))?;
+    let output=command(&tools.ffprobe).args(["-v","error","-protocol_whitelist","file,pipe","-show_entries","stream=codec_type,index,width,height,time_base,start_pts,start_time,duration_ts,duration,avg_frame_rate,r_frame_rate,codec_name,sample_aspect_ratio:stream_side_data=rotation:format=duration","-of","json"]).arg(&path).output().map_err(|e|format!("FFprobe não disponível. Reinstale o Meraki ou configure MERAKI_FFMPEG_DIR no ambiente de desenvolvimento. {e}"))?;
     if !output.status.success() {
         return Err(format!(
             "Não foi possível inspecionar o vídeo: {}",
