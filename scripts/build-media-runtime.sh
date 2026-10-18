@@ -23,7 +23,7 @@ exe=''
 link_flags='-static-libgcc -static-libstdc++'
 if [[ "$target" == windows ]]; then
   cross=(--host=x86_64-w64-mingw32 --cross-prefix=x86_64-w64-mingw32-)
-  cmake_cross=(-DCMAKE_SYSTEM_NAME=Windows -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++)
+  cmake_cross=(-DCMAKE_SYSTEM_NAME=Windows -DCMAKE_SYSTEM_PROCESSOR=x86_64 -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++)
   ff_cross=(--target-os=mingw32 --arch=x86_64 --cross-prefix=x86_64-w64-mingw32- --enable-cross-compile)
   exe='.exe'
   link_flags='-static'
@@ -37,6 +37,9 @@ cmake -S "$work/x265_3.6/source" -B "$work/x265-build" "${cmake_cross[@]}" \
   -DENABLE_CLI=OFF -DENABLE_NUMA=OFF -DENABLE_LIBNUMA=OFF -DENABLE_ASSEMBLY=ON
 cmake --build "$work/x265-build" -j"$(nproc)"
 cmake --install "$work/x265-build"
+if [[ "$target" == windows ]]; then
+  sed -i 's/-lgcc_s/-lgcc_eh/g' "$prefix/lib/pkgconfig/x265.pc"
+fi
 cd "$work/ffmpeg-7.1.1"
 trap 'test ! -f ffbuild/config.log || tail -n 100 ffbuild/config.log' ERR
 export PKG_CONFIG_LIBDIR="$prefix/lib/pkgconfig"
