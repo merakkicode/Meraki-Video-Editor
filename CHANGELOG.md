@@ -11,6 +11,7 @@ Initial public release for Windows x64 and Linux x64.
 - Native audio playback, mixer, meters and equalization.
 - Proxies, media relinking, project persistence and recovery checkpoints.
 - Deterministic export queue with H.264, H.265 and ProRes presets.
+- Original Meraki code under Apache-2.0, with dependency licenses preserved.
 - One official download per platform, checksum verification and source distribution materials.
 
 See [release notes](docs/release-notes.md) for installation and current limitations.

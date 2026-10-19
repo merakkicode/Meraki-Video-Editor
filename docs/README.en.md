@@ -46,4 +46,4 @@ CI builds and tests both platforms. Hardware-dependent audio/GPU tests run separ
 
 ## License
 
-Original Meraki code is [MIT](../LICENSE-MIT) OR [Apache-2.0](../LICENSE-APACHE). Bundled dependencies retain their respective licenses and credits; see [third-party notices](../THIRD_PARTY_NOTICES.md). Corresponding distribution materials accompany the release.
+Original Meraki code is [Apache-2.0](../LICENSE). Bundled dependencies retain their respective licenses and credits; see [third-party notices](../THIRD_PARTY_NOTICES.md). Corresponding distribution materials accompany the release.

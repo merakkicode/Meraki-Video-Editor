@@ -16,8 +16,7 @@
         ],
         "section": "video",
         "files": {
-          "/usr/lib/meraki/tools/ffmpeg": "../../../tools/linux/ffmpeg",
-          "/usr/share/metainfo/org.merakkicode.Meraki.metainfo.xml": "../../../packaging/flatpak/org.merakkicode.Meraki.metainfo.xml"
+          "/usr/lib/meraki/tools/ffmpeg": "../../../tools/linux/ffmpeg"
         }
       },
       "appimage": {
@@ -27,6 +26,11 @@
           "usr/share/doc/fonts-dejavu-core/copyright": "/usr/share/doc/fonts-dejavu-core/copyright"
         }
       }
+    },
+    "resources": {
+      "../../../LICENSE": "licenses/meraki/LICENSE",
+      "../../../NOTICE": "licenses/meraki/NOTICE",
+      "../../../THIRD_PARTY_NOTICES.md": "licenses/meraki/THIRD_PARTY_NOTICES.md"
     }
   }
 }

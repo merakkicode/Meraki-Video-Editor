@@ -1,10 +1,10 @@
 # Third-party software
 
-Original Meraki code is MIT OR Apache-2.0. This grant does not relicense dependencies or transfer third-party authorship. Rust and frontend dependencies are recorded in Cargo.lock and apps/desktop/package-lock.json. Tauri, wgpu, CPAL, SolidJS, fontdue and other dependencies remain the work of their respective contributors.
+Original Meraki code is Apache-2.0. This grant does not relicense dependencies or transfer third-party authorship. Rust and frontend dependencies are recorded in Cargo.lock and apps/desktop/package-lock.json. Tauri, wgpu, CPAL, SolidJS, fontdue and other dependencies remain the work of their respective contributors.
 
 ## Media runtime
 
-Official packages invoke FFmpeg as a separate command-line process. FFmpeg builds enable GPL components x264 and x265; that runtime is distributed under its applicable GPL terms, not Meraki's dual license. The package preserves FFmpeg, x264 and x265 license texts. Its corresponding source archives, build script, configuration records and toolchain versions are included in the source-materials asset on the same release page as the binaries.
+Official packages invoke FFmpeg as a separate command-line process. FFmpeg builds enable GPL components x264 and x265; that runtime is distributed under its applicable GPL terms, not Meraki's Apache-2.0 license. The package preserves FFmpeg, x264 and x265 license texts. Its corresponding source archives, build script, configuration records and toolchain versions are included in the source-materials asset on the same release page as the binaries.
 
 The checked-in release build script records exact input checksums. If runtime versions, options or dependencies change, rebuild and publish the matching source materials alongside those binaries. Upstream information: [FFmpeg licensing](https://ffmpeg.org/legal.html), [x264](https://www.videolan.org/developers/x264.html), [x265](https://www.videolan.org/developers/x265.html).
 

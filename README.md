@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/merakkicode/Meraki-Video-Editor/releases/tag/v1.0.0"><img alt="Versão 1.0.0" src="https://img.shields.io/badge/vers%C3%A3o-1.0.0-9D4EDD"></a>
   <a href="https://github.com/merakkicode/Meraki-Video-Editor/actions/workflows/ci.yml"><img alt="Builds e testes" src="https://github.com/merakkicode/Meraki-Video-Editor/actions/workflows/ci.yml/badge.svg?branch=main"></a>
-  <a href="LICENSE"><img alt="Licença MIT ou Apache 2.0" src="https://img.shields.io/badge/licen%C3%A7a-MIT%20%2F%20Apache--2.0-00D2FF"></a>
+  <a href="LICENSE"><img alt="Licença Apache 2.0" src="https://img.shields.io/badge/licen%C3%A7a-Apache--2.0-00D2FF"></a>
   <img alt="Windows e Linux de 64 bits" src="https://img.shields.io/badge/plataformas-Windows%20%7C%20Linux-596779">
 </p>
 
@@ -85,6 +85,6 @@ Encontrou um defeito ou tem uma proposta? Abra uma [issue](https://github.com/me
 
 ## Licença
 
-O código original do Meraki está disponível sob [MIT](LICENSE-MIT) ou [Apache-2.0](LICENSE-APACHE), à sua escolha. FFmpeg, codecs, fontes e demais dependências conservam suas próprias licenças e créditos. Consulte [Componentes de terceiros](THIRD_PARTY_NOTICES.md); os materiais de distribuição acompanham a release.
+O código original do Meraki está disponível sob a licença [Apache-2.0](LICENSE). FFmpeg, codecs, fontes e demais dependências conservam suas próprias licenças e créditos. Consulte [Componentes de terceiros](THIRD_PARTY_NOTICES.md); os materiais de distribuição acompanham a release.
 
 **Meraki Core Team · Meraki Contributors**

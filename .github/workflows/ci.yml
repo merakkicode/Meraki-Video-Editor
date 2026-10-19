@@ -94,7 +94,9 @@ jobs:
           tar -xzf media-download/media-runtime-linux.tar.gz -C tools/linux/ffmpeg
           tools/linux/ffmpeg/bin/ffmpeg -version
       - name: Check release metadata
-        run: node scripts/check-release.mjs
+        run: |
+          node scripts/check-release.mjs
+          node --test scripts/prepare-release.test.mjs
       - run: cargo fmt --all -- --check
       - run: cargo test --workspace --locked
       - run: cargo clippy --workspace --all-targets --locked -- -D warnings

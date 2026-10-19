@@ -42,6 +42,7 @@
       "icons/128x128@2x.png",
       "icons/icon.ico"
     ],
-    "license": "MIT OR Apache-2.0"
+    "license": "Apache-2.0",
+    "licenseFile": "../../../LICENSE"
   }
 }

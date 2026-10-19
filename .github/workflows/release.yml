@@ -2,16 +2,36 @@ name: Release
 on:
   push:
     tags: ['v*.*.*']
+    branches: [main]
+    paths: ['Cargo.toml', '.github/workflows/release.yml']
+  workflow_dispatch:
 permissions:
   contents: read
 concurrency:
-  group: release-${{ github.ref }}
+  group: release
   cancel-in-progress: false
 jobs:
+  prepare:
+    runs-on: ubuntu-22.04
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
+      publish: ${{ steps.version.outputs.publish }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate release selection
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/prepare-release.mjs
   build:
+    needs: prepare
+    if: needs.prepare.outputs.publish == 'true'
     uses: ./.github/workflows/ci.yml
   publish:
-    needs: build
+    needs: [prepare, build]
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -25,11 +45,11 @@ jobs:
           path: artifacts
       - name: Validate stable version
         env:
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ needs.prepare.outputs.tag }}
         run: node scripts/check-release.mjs
       - name: Assemble release
         env:
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ needs.prepare.outputs.tag }}
         run: |
           mkdir -p publish sources/media sources/linux
           cp artifacts/meraki-Windows-x64/Meraki-Setup.exe publish/
@@ -39,6 +59,7 @@ jobs:
           cp artifacts/media-linux/media-sources-linux.tar.gz sources/media/
           cp artifacts/linux-library-sources/linux-library-sources.tar.gz sources/linux/
           cp THIRD_PARTY_NOTICES.md sources/
+          cp LICENSE NOTICE sources/
           printf 'Meraki source revision: %s\nBuild: %s/actions/runs/%s\n' "$GITHUB_SHA" "https://github.com/$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > sources/BUILD.txt
           tar -czf "publish/Meraki-$RELEASE_TAG-sources.tar.gz" -C sources .
           (cd publish && sha256sum -- * > ../SHA256SUMS)
@@ -46,6 +67,16 @@ jobs:
       - name: Publish stable release
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ needs.prepare.outputs.tag }}
         run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --tags origin "refs/tags/$RELEASE_TAG"; then
+            git fetch origin "refs/tags/$RELEASE_TAG:refs/tags/$RELEASE_TAG"
+            test "$(git rev-parse "$RELEASE_TAG^{commit}")" = "$GITHUB_SHA"
+          else
+            status=$?
+            test "$status" = 2
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' tag -a "$RELEASE_TAG" -m "Meraki Video Editor $RELEASE_TAG" "$GITHUB_SHA"
+            git push origin "refs/tags/$RELEASE_TAG"
+          fi
           gh release create "$RELEASE_TAG" publish/* --verify-tag --latest --title "Meraki Video Editor $RELEASE_TAG" --notes-file docs/release-notes.md

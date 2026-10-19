@@ -4,7 +4,7 @@ Official repository: https://github.com/merakkicode/Meraki-Video-Editor.
 
 ## Distribution policy
 
-Publish one end-user package per platform: **Meraki-Setup.exe** (NSIS, Windows x64) and **Meraki.AppImage** (Linux x64). Sources and SHA256SUMS accompany them. MSI, DEB and Flatpak recipes remain developer options; they are not advertised as additional official release variants. Flathub has not published this application.
+Publish one end-user package per platform: **Meraki-Setup.exe** (NSIS, Windows x64) and **Meraki.AppImage** (Linux x64). Sources and SHA256SUMS accompany them. MSI, DEB and Flatpak recipes remain developer options; they are not advertised as additional official release variants. Flathub has not published this application. AppStream catalog metadata is not shipped: its permitted metadata licenses exclude Apache-2.0, the sole license for original project material.
 
 ## Build pipeline
 
@@ -16,17 +16,12 @@ Developer runtime helpers may use different upstream packages. Official artifact
 
 ## Publish a stable version
 
-1. Update Cargo workspace, npm and Tauri versions together; update the UI version, AppStream metadata, changelog, download links and release notes.
-2. Push the reviewed changes and verify the CI results. Complete the applicable manual platform checks.
-3. Confirm the version with `RELEASE_TAG=v1.0.0 node scripts/check-release.mjs` (set the environment variable using your shell syntax).
-4. Create and push the annotated version tag:
+1. Update Cargo workspace, npm and Tauri versions together; update the UI version, changelog, download links and release notes.
+2. Push the reviewed version/metadata changes to `main`. A change to `Cargo.toml` (or the release workflow) starts the release pipeline. It validates metadata and checks whether that stable version is already published; existing stable releases are skipped on main.
+3. The pipeline runs all gated builds. Only after both platforms pass does it create the annotated `v<version>` tag at the exact built commit and publish the release as Latest. Existing tags must resolve to that same commit. Sources, project notices and SHA-256 checksums accompany the binaries.
+4. For an unpublished version, maintainers can retry from Actions → Release → Run workflow on `main`. Explicit retries of published versions are rejected. Pushing an annotated version tag remains supported; its name must match the package version.
 
-```sh
-git tag -a v1.0.0 -m 'Meraki Video Editor 1.0.0'
-git push origin v1.0.0
-```
-
-The tag workflow runs the gated builds, packages source materials and SHA-256 checksums, then publishes the stable release as Latest. No external source-archive repository variable is required. The workflow refuses a tag that differs from the package version. A failed build leaves the tag without a published binary release; repair the build and inspect the commit before retrying. Never silently replace a published version's binaries.
+A failed build leaves the version unpublished. Repair the failure and inspect the commit before retrying. Never silently replace a published version's binaries. Complete the applicable manual platform checks as well; CI smoke checks do not establish device-specific playback or GPU performance.
 
 After publication, verify the two download links, asset checksums, release tag and source materials. Keep the source package available for as long as the associated binaries are distributed. Packages are unsigned until signing credentials are configured; do not describe SHA-256 hashes as signatures.
 

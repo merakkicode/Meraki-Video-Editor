@@ -6,7 +6,10 @@
     "resources": {
       "../../../tools/ffmpeg/bin/ffmpeg.exe": "tools/ffmpeg/bin/ffmpeg.exe",
       "../../../tools/ffmpeg/bin/ffprobe.exe": "tools/ffmpeg/bin/ffprobe.exe",
-      "../../../tools/ffmpeg/licenses/": "tools/ffmpeg/licenses/"
+      "../../../tools/ffmpeg/licenses/": "tools/ffmpeg/licenses/",
+      "../../../LICENSE": "licenses/meraki/LICENSE",
+      "../../../NOTICE": "licenses/meraki/NOTICE",
+      "../../../THIRD_PARTY_NOTICES.md": "licenses/meraki/THIRD_PARTY_NOTICES.md"
     },
     "windows": {
       "nsis": {

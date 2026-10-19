@@ -12,6 +12,6 @@ Tests should verify invariants and behavior: rational time, revision conflicts, 
 
 Keep domain crates independent from the interface. Use bounded worker queues, preserve decimal-string IPC precision, and keep allocation, blocking locks and I/O out of the audio callback. Retain safe Rust boundaries and the CPU rendering fallback.
 
-Use concise commit subjects such as feat(timeline): add marker navigation or fix(audio): reset playback epoch on seek. Keep third-party notices intact. By contributing original work, you agree to its distribution under MIT OR Apache-2.0.
+Use concise commit subjects such as feat(timeline): add marker navigation or fix(audio): reset playback epoch on seek. Keep third-party notices intact. By contributing original work, you agree to its distribution under Apache-2.0.
 
 Maintained by Meraki Core Team and Meraki Contributors.
